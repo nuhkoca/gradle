@@ -1,7 +1,12 @@
 name: Contributor CI Build
 
 on:
+  push:
+    branches:
+      - master
   pull_request:
+    branches:
+      - master
   
 env:
   CACHE_DEBUG_ENABLED: true
@@ -33,6 +38,7 @@ jobs:
         id: gradle
         uses: gradle/gradle-build-action@v2
         with:
+          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
           arguments: |
               compileAll
               --no-configuration-cache
@@ -72,6 +78,7 @@ jobs:
         id: gradle
         uses: gradle/gradle-build-action@v2
         with:
+          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
           arguments: |
               sanityCheck
               --no-configuration-cache
@@ -112,6 +119,7 @@ jobs:
         id: gradle
         uses: gradle/gradle-build-action@v2
         with:
+          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
           arguments: |
               ${{ matrix.bucket.tasks }}
               --no-configuration-cache
