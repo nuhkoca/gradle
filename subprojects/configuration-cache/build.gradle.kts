@@ -3,6 +3,8 @@ plugins {
     id("gradlebuild.kotlin-dsl-sam-with-receiver")
 }
 
+description = "Configuration cache implementation"
+
 val configurationCacheReportPath by configurations.creating {
     isVisible = false
     isCanBeConsumed = false
@@ -74,6 +76,7 @@ dependencies {
     testImplementation(libs.mockitoKotlin2)
     testImplementation(libs.kotlinCoroutinesDebug)
 
+    integTestImplementation(project(":enterprise-operations"))
     integTestImplementation(project(":jvm-services"))
     integTestImplementation(project(":tooling-api"))
     integTestImplementation(project(":platform-jvm"))
