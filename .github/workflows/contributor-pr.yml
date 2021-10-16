@@ -9,6 +9,9 @@ on:
       - master
   
 env:
+  # Set the GRADLE_ENTERPRISE_ACCESS_KEY so that Gradle Build Scans are generated
+  GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+  # Enable debub for the `gradle-build-action` cache operations
   CACHE_DEBUG_ENABLED: true
 
 jobs:
@@ -58,9 +61,6 @@ jobs:
     outputs:
       matrix: ${{ steps.setup-matrix.outputs.matrix }}
       sys-prop-args: ${{ steps.determine-sys-prop-args.outputs.sys-prop-args }}
-    env:
-      # Set the GRADLE_ENTERPRISE_ACCESS_KEY so that Gradle Build Scans are generated
-      GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
 
   sanity-check:
     name: "Sanity Check on Linux"
@@ -95,9 +95,6 @@ jobs:
               repo: context.repo.repo,
               body: '❌ ${{ github.workflow }} failed: ${{ steps.gradle.outputs.build-scan-url }}'
             })
-    env:
-      # Set the GRADLE_ENTERPRISE_ACCESS_KEY so that Gradle Build Scans are generated
-      GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
 
   unit-test:
     name: "${{ matrix.bucket.name }} (Unit Test)"
@@ -124,6 +121,3 @@ jobs:
               ${{ matrix.bucket.tasks }}
               --no-configuration-cache
               ${{ needs.build.outputs.sys-prop-args }}
-    env:
-      # Set the GRADLE_ENTERPRISE_ACCESS_KEY so that Gradle Build Scans are generated
-      GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
